@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
-* _stringlen - Program returns the length of a string.
+* _stringlen - A function that returns the length of a string.
 * @string: string array to be counted.
 * Return: Length of the string.
 */

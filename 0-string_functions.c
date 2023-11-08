@@ -2,7 +2,7 @@
 
 
 /**
-* _putchar - Function prints a character to the standard output.
+* _putchar - A function prints a character to the standard output.
 * @chr: character to be printed.
 * Return: the printed character to stdout.
 */

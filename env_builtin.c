@@ -3,14 +3,26 @@
 /**
  * env_builtin - Implement the `env` built-in command to print the current environment.
  */
-void env_builtin(void)
+void env_builtin(shell_t *shell)
 {
 	size_t i;
-	extern char **environ;  /* Access environment variables */
 
-	for (i = 0; environ[i] != NULL; i++)
+	if (shell == NULL || shell->environ == NULL)
 	{
-		write(STDOUT_FILENO, environ[i], strlen(environ[i]));
-		write(STDOUT_FILENO, "\n", 1);
+		fprintf(stderr, "Error: Invalid shell or environment\n");
+		return;
+	}
+
+	for (i = 0; shell->environ[i] != NULL; i++)
+	{
+		if (write(STDOUT_FILENO, shell->environ[i], strlen(shell->environ[i])) == -1)
+		{
+			perror("write");
+			return;
+		}
+		if (write(STDOUT_FILENO, "\n", 1) == -1)
+		{
+			perror("write");
+		}
 	}
 }

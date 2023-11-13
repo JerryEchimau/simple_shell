@@ -17,9 +17,9 @@ typedef struct shell
 	char **environ;
 } shell_t;
 
-extern shell_t shell;
+extern char **environ;
+void env_builtin(shell_t *shell);
 
-void env_builtin(void);
 
 /* function prototypes */
 void display_prompt(void);
@@ -31,10 +31,10 @@ void setup_signal_handler(void);
 char **parse_line(char *line);
 void free_tokens(char **tokens);
 
-void execute_command(char **args);
+void execute_command(char **args, shell_t *shell);
 int is_builtin(const char *command);
-void execute_builtin(const char *command, char **args);
-char *find_command(const char *command);
+void execute_builtin(const char *command, char **args, shell_t *shell);
+char *find_command(const char *command, shell_t *shell);
 
 void print_error(char *message);
 

@@ -31,7 +31,7 @@ void execute_command(char **args, shell_t *shell)
 			{
 				if (execve(command_path, args, shell->environ) == -1)
 				{
-					perror("./shell");
+					perror("execve");
 					free(command_path);
 					_exit(126);
 				}

@@ -1,3 +1,5 @@
+/* parse_line.c */
+
 #include "shell.h"
 
 /**
@@ -40,6 +42,9 @@ char **parse_line(char *line)
 		token = strtok(NULL, " ");
 	}
 	tokens[i] = NULL; /* null terminate */
+
+	if (!tokens)
+		return (NULL);
 	return (tokens);
 }
 

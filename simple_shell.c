@@ -9,8 +9,17 @@
  */
 int main(void)
 {
+	shell_t shell;
 	char *line;
 	char **args;
+
+	if (putenv("TERM=xterm-256color") != 0)
+	{
+		perror("putenv");
+		return (EXIT_FAILURE);
+	}
+
+	shell.environ = environ;
 
 	while (1)
 	{
@@ -24,7 +33,7 @@ int main(void)
 		args = parse_line(line);
 		if (args[0] != NULL)
 		{
-			execute_command(args);
+			execute_command(args, &shell);
 		}
 		free(line);
 		free_tokens(args);

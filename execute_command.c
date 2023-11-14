@@ -5,19 +5,18 @@
 /**
  * execute_command - Execute the given command using execve.
  * @args: An array of command and arguments.
+ * @shell: environment variable
  */
-void execute_command(char **args)
+void execute_command(char **args, shell_t *shell)
 {
 	pid_t child_pid;
 	int status;
 
-	if (is_builtin(args[0]))
-	{ /* Handle built-in commands */
-		execute_builtin(args[0], args);
-	}
+	if (is_builtin(args[0])) /* handle builtin commands */
+		execute_builtin(args[0], args, shell);
 	else
 	{
-		char *command_path = find_command(args[0]);
+		char *command_path = find_command(args[0], shell);
 
 		if (command_path != NULL)
 		{
@@ -30,7 +29,7 @@ void execute_command(char **args)
 			}
 			if (child_pid == 0) /* success */
 			{
-				if (execve(command_path, args, NULL) == -1)
+				if (execve(command_path, args, shell->environ) == -1)
 				{
 					perror("execve");
 					free(command_path);
@@ -38,14 +37,13 @@ void execute_command(char **args)
 				}
 			}
 			else /* parent process */
-			{
 				waitpid(child_pid, &status, 0);
-			}
 			free(command_path);
 		}
 		else
 		{/* Command not found */
 			char *error_message = str_concat(args[0], ": command not found\n");
+
 			print_error(error_message);
 			free(error_message);
 		}
@@ -66,12 +64,13 @@ int is_builtin(const char *command)
  * execute_builtin - Execute the given built-in command.
  * @command: The built-in command to execute.
  * @args: an array of commands and arguments
+ * @shell: environment variable
  */
-void execute_builtin(const char *command, char **args)
+void execute_builtin(const char *command, char **args, shell_t *shell)
 {
 	if (strcmp(command, "env") == 0)
 	{
-		env_builtin();
+		env_builtin(shell);
 	}
 	else if (strcmp(command, "exit") == 0)
 	{
@@ -84,16 +83,27 @@ void execute_builtin(const char *command, char **args)
  * find_command - Find the full path of the command using PATH resolution.
  * @command: The command to find.
  * Return: The full path of the command or NULL if not found.
+ * @shell: environment variable
  */
-char *find_command(const char *command)
+char *find_command(const char *command, shell_t *shell)
 {
 	char *path = getenv("PATH");
 	char *path_copy = strdup(path);
 	char *token = strtok(path_copy, ":");
+	char *full_path = NULL;
+	(void)shell;
+
+	/*check if command is an absolute path first */
+	if (command[0] == '/')
+	{
+		if (access(command, F_OK) == 0)
+			return (strdup(command));
+		return (NULL);
+	}
 
 	while (token != NULL)
 	{
-		char *full_path = str_concat(token, "/");
+		full_path = str_concat(token, "/");
 		full_path = str_concat(full_path, command);
 
 		if (access(full_path, F_OK) == 0)
@@ -102,8 +112,10 @@ char *find_command(const char *command)
 			return (full_path);
 		}
 		free(full_path);
+		full_path = NULL;
 		token = strtok(NULL, ":"); /* move to the next command */
 	}
 	free(path_copy);
+
 	return (NULL);
 }

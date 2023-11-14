@@ -1,3 +1,5 @@
+/* string_utils.c */
+
 #include "shell.h"
 
 /**
@@ -25,5 +27,6 @@ char *str_concat(const char *s1, const char *s2)
 		result[i + j] = s2[j];
 
 	result[i + j] = '\0';
+
 	return (result);
 }

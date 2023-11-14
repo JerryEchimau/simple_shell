@@ -12,6 +12,15 @@
 #include <signal.h>
 
 /* environment variables */
+
+/**
+ * struct shell - Structure representing a shell environment
+ * @environ: Array of strings containing the environment variables
+ *
+ * Description: This structure encapsulates the environment variables
+ *              associated with a shell, providing a convenient way to
+ *              manage and access the shell environment.
+ */
 typedef struct shell
 {
 	char **environ;
@@ -38,6 +47,7 @@ char *find_command(const char *command, shell_t *shell);
 
 void print_error(char *message);
 
+/* custom lib functions */
 char *str_concat(const char *s1, const char *s2);
 
 #endif /* SHELL_H */

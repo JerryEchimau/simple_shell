@@ -1,7 +1,10 @@
+/* env_builtin.c */
+
 #include "shell.h"
 
 /**
- * env_builtin - Implement the `env` built-in command to print the current environment.
+ * env_builtin - Implement the `env` built-in command
+ * @shell: environment variable
  */
 void env_builtin(shell_t *shell)
 {
@@ -23,6 +26,7 @@ void env_builtin(shell_t *shell)
 		if (write(STDOUT_FILENO, "\n", 1) == -1)
 		{
 			perror("write");
+			return;
 		}
 	}
 }

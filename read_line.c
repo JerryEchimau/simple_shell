@@ -25,7 +25,7 @@ char *read_line(void)
 		return (NULL);
 	}
 
-	if (read_chars > 0 && line[read_chars -1] == '\n')
+	if (read_chars > 0 && line[read_chars - 1] == '\n')
 		line[read_chars - 1] = '\0';
 
 	signal(SIGINT, SIG_DFL); /* reset signal handler */

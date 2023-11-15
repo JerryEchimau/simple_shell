@@ -50,6 +50,7 @@ char *find_command(const char *command, shell_t *shell);
 void print_error(char *message);
 
 char *str_concat(const char *s1, const char *s2);
+char *gj_strtoken(char *string, const char *delim);
 
 /* external variables */
 extern char **environ;

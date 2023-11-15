@@ -1,5 +1,3 @@
-/* read_line */
-
 #include "shell.h"
 
 /**

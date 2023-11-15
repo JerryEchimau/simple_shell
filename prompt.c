@@ -1,5 +1,3 @@
-/* prompt.c */
-
 #include "shell.h"
 
 /**

@@ -30,7 +30,8 @@ char *read_line(void)
 void handle_sigint(int signo)
 {
 	(void)signo;  /* Suppress unused parameter warning */
-	write(STDOUT_FILENO, "\n#cisfun$ ", 10);
+	write(STDOUT_FILENO, "\n", 1);
+	display_prompt();
 }
 
 /**

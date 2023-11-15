@@ -26,6 +26,14 @@ typedef struct shell
 /* Function Prototypes */
 void env_builtin(shell_t *shell);
 void display_prompt(void);
+<<<<<<< HEAD
+=======
+
+char *_getline(void);
+ssize_t _read_chars(char *buffer, size_t size);
+char *_append_to_line(char *line, size_t *len, char c);
+
+>>>>>>> 4201c47fd905d4d306979d7231ae22dd430e7a38
 char *read_line(void);
 void handle_sigint(int signo);
 void setup_signal_handler(void);

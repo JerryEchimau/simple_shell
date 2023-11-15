@@ -33,6 +33,10 @@ void env_builtin(shell_t *shell);
 /* function prototypes */
 void display_prompt(void);
 
+char *_getline(void);
+ssize_t _read_chars(char *buffer, size_t size);
+char *_append_to_line(char *line, size_t *len, char c);
+
 char *read_line(void);
 void handle_sigint(int signo);
 void setup_signal_handler(void);

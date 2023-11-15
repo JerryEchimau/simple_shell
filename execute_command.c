@@ -1,5 +1,3 @@
-/* execute_command.c */
-
 #include "shell.h"
 
 /**

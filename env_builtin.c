@@ -1,5 +1,3 @@
-/* env_builtin.c */
-
 #include "shell.h"
 
 /**

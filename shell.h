@@ -29,7 +29,7 @@ void display_prompt(void);
 char *read_line(void);
 void handle_sigint(int signo);
 void setup_signal_handler(void);
-char **parse_line(char *line);
+char **parse_line(const char *line, const char *delimiters);
 void free_tokens(char **tokens);
 void execute_command(char **args, shell_t *shell);
 int is_builtin(const char *command);

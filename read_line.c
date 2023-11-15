@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-=======
 /* read_line.c */
 
->>>>>>> 4201c47fd905d4d306979d7231ae22dd430e7a38
 #include "shell.h"
 
 /**

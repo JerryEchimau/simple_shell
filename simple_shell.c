@@ -5,9 +5,6 @@
 /**
  * main - entry point for the shell program
  *
- * Description: Initializes the shell environment, handles user input,
- * parses commands, and executes them in a loop until the
- * user exits the shell or encounters an error.
  * Return: 0 on success
  */
 int main(void)

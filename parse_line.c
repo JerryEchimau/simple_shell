@@ -18,7 +18,7 @@ char **parse_line(char *line)
 	if (!tokens)
 		return (NULL);
 
-	token = strtok(line, " ");
+	token = gj_strtoken(line, " ");
 	while (token)
 	{
 		tokens[i] = strdup(token);
@@ -39,7 +39,7 @@ char **parse_line(char *line)
 				return (NULL);
 			}
 		}
-		token = strtok(NULL, " ");
+		token = gj_strtoken(NULL, " ");
 	}
 	tokens[i] = NULL; /* null terminate */
 	return (tokens);

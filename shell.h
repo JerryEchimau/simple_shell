@@ -28,19 +28,17 @@ typedef struct shell
 	char **environ;
 } shell_t;
 
-
+/* builtins */
 void builtin_env(shell_t *shell);
 void builtin_exit(char **args);
 void builtin_setenv(char **args);
 void builtin_unsetenv(char **args);
+void builtin_cd(char **args);
 
 /* function prototypes */
 void display_prompt(void);
 
 char *read_line(void);
-ssize_t _read_chars(char *buffer, size_t size);
-char *_append_to_line(char *line, size_t *len, char c);
-char *_getline(void);
 void handle_sigint(int signo);
 void setup_signal_handler(void);
 
@@ -56,6 +54,10 @@ void print_error(char *message);
 
 char *str_concat(const char *s1, const char *s2);
 char *gj_strtoken(char *string, const char *delim);
+
+char *_getline(void);
+ssize_t _read_chars(char *buffer, size_t size);
+char *_append_to_line(char *line, size_t *len, char c);
 
 /* external variables */
 extern char **environ;

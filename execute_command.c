@@ -5,6 +5,7 @@
 /**
  * execute_command - Execute the given command using execve.
  * @args: An array of command and arguments.
+ * @shell: Pointer to the shell structure
  */
 void execute_command(char **args, shell_t *shell)
 {
@@ -46,6 +47,7 @@ void execute_command(char **args, shell_t *shell)
 		else
 		{/* Command not found */
 			char *error_message = str_concat(args[0], ": command not found\n");
+
 			print_error(error_message);
 			free(error_message);
 		}
@@ -62,7 +64,8 @@ int is_builtin(const char *command)
 	return (strcmp(command, "env") == 0
 			|| strcmp(command, "exit") == 0
 			|| strcmp(command, "setenv") == 0
-			|| strcmp(command, "unsetenv") == 0);
+			|| strcmp(command, "unsetenv") == 0
+			|| strcmp(command, "cd") == 0);
 }
 
 /**
@@ -74,21 +77,15 @@ int is_builtin(const char *command)
 void execute_builtin(const char *command, char **args, shell_t *shell)
 {
 	if (strcmp(command, "env") == 0)
-	{
 		builtin_env(shell);
-	}
 	else if (strcmp(command, "exit") == 0)
-	{
 		builtin_exit(args);
-	}
 	else if (strcmp(command, "setenv") == 0)
-	{
 		builtin_setenv(args);
-	}
 	else if (strcmp(command, "unsetenv") == 0)
-	{
 		builtin_unsetenv(args);
-	}
+	else if (strcmp(command, "cd") == 0)
+		builtin_cd(args);
 }
 
 /**
@@ -114,6 +111,7 @@ char *find_command(const char *command, shell_t *shell)
 	while (token != NULL)
 	{
 		char *full_path = str_concat(token, "/");
+
 		full_path = str_concat(full_path, command);
 
 		if (access(full_path, F_OK) == 0)

@@ -39,6 +39,7 @@ void builtin_exit(char **args)
 	if (args[1] != NULL)
 	{
 		int status = atoi(args[1]);
+
 		exit(status);
 	}
 	else
@@ -83,4 +84,67 @@ void builtin_unsetenv(char **args)
 	{
 		fprintf(stderr, "Usage: unsetenv VARIABLE\n");
 	}
+}
+
+/**
+ * builtin_cd - Execute the cd built-in command.
+ * @args: an array of commands and arguments
+ */
+void builtin_cd(char **args)
+{
+	char *new_dir, *old_dir, *new_pwd;
+
+	if (args[1] == NULL || strcmp(args[1], "~") == 0)/* Change to home directory if no argument is provided */
+		new_dir = getenv("HOME");
+	else if (strcmp(args[1], "-") == 0)
+	{
+		old_dir = getenv("OLDPWD");
+
+		if (old_dir != NULL)
+		{
+			if (chdir(old_dir) != 0)
+				perror("cd");
+			else
+				fprintf(stderr, "%s\n", old_dir); /* Print the old directory when using "cd -" */
+		}
+		else
+		{
+			fprintf(stderr, "cd: OLDPWD not set\n");
+		}
+		return;
+	}
+	else
+	{
+		new_dir = args[1];
+	}
+
+	old_dir = getcwd(NULL, 0);
+
+	if (old_dir == NULL)
+	{
+		perror("getcwd");
+		return;
+	}
+
+	if (chdir(new_dir) != 0)
+	{
+		perror("cd");
+		free(old_dir);
+		return;
+	}
+
+	setenv("OLDPWD", old_dir, 1);
+
+	new_pwd = getcwd(NULL, 0);
+	if (new_pwd == NULL)
+	{
+		perror("getcwd");
+		free(old_dir);
+		return;
+	}
+
+	setenv("PWD", new_pwd, 1);
+
+	free(old_dir);
+	free(new_pwd);
 }

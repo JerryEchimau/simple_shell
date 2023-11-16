@@ -66,14 +66,25 @@ int is_builtin(const char *command)
  */
 void execute_builtin(const char *command, char **args, shell_t *shell)
 {
+	int status;
+
 	if (strcmp(command, "env") == 0)
 	{
 		env_builtin(shell);
 	}
 	else if (strcmp(command, "exit") == 0)
 	{
-		free_tokens(args);
-		exit(0);
+		if (args[1] != NULL)
+		{
+			status = atoi(args[1]);
+			free_tokens(args);
+			exit(status);
+		}
+		else
+		{
+			free_tokens(args);
+			exit(0);
+		}
 	}
 }
 

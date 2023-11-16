@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-=======
 /* read_line.c */
 
->>>>>>> 4201c47fd905d4d306979d7231ae22dd430e7a38
 #include "shell.h"
 
 /**
@@ -30,7 +27,8 @@ char *read_line(void)
 void handle_sigint(int signo)
 {
 	(void)signo;  /* Suppress unused parameter warning */
-	write(STDOUT_FILENO, "\n#cisfun$ ", 10);
+	write(STDOUT_FILENO, "\n", 1);
+	display_prompt();
 }
 
 /**

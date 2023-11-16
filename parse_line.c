@@ -1,13 +1,14 @@
+/* parse_line.c */
+
 #include "shell.h"
 
 /**
  * parse_line - parses command line arguments into tokens
- * @line: the input line to parse.
- * @delimiters: The set of delimiters to use for tokenization.
+ * @line: the input line to parse
  *
  * Return: An array of tokens or NULL on failure
  */
-char **parse_line(const char *line, const char *delimiters)
+char **parse_line(char *line)
 {
 	size_t max_tokens = 10;
 	char **tokens = malloc(sizeof(char *) * (max_tokens + 1));
@@ -17,13 +18,12 @@ char **parse_line(const char *line, const char *delimiters)
 	if (!tokens)
 		return (NULL);
 
-	token = strtok((char *)line, delimiters);
+	token = strtok(line, " ");
 	while (token)
 	{
 		tokens[i] = strdup(token);
 		if (!tokens[i])
 		{
-			perror("Memory allocation failed");
 			free_tokens(tokens);
 			return (NULL);
 		}
@@ -35,17 +35,13 @@ char **parse_line(const char *line, const char *delimiters)
 			tokens = realloc(tokens, sizeof(char *) * (max_tokens + 1));
 			if (!tokens)
 			{
-				perror("Memory allocation failed");
 				free_tokens(tokens);
 				return (NULL);
 			}
 		}
-		token = strtok(NULL, delimiters);
+		token = strtok(NULL, " ");
 	}
-	tokens[i] = NULL; /* Null terminate the token array */
-
-	if (!tokens)
-		return (NULL);
+	tokens[i] = NULL; /* null terminate */
 	return (tokens);
 }
 

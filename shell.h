@@ -1,3 +1,5 @@
+/* shell.h */
+
 #ifndef SHELL_H
 #define SHELL_H
 
@@ -26,8 +28,11 @@ typedef struct shell
 	char **environ;
 } shell_t;
 
-void env_builtin(shell_t *shell);
 
+void builtin_env(shell_t *shell);
+void builtin_exit(char **args);
+void builtin_setenv(char **args);
+void builtin_unsetenv(char **args);
 
 /* function prototypes */
 void display_prompt(void);
@@ -56,4 +61,3 @@ char *gj_strtoken(char *string, const char *delim);
 extern char **environ;
 
 #endif /* SHELL_H */
-

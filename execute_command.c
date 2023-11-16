@@ -1,17 +1,20 @@
+/* execute_command.c */
+
 #include "shell.h"
 
 /**
  * execute_command - Execute the given command using execve.
  * @args: An array of command and arguments.
- * @shell: environment variable
  */
 void execute_command(char **args, shell_t *shell)
 {
 	pid_t child_pid;
 	int status;
 
-	if (is_builtin(args[0])) /* handle builtin commands */
+	if (is_builtin(args[0]))
+	{ /* Handle built-in commands */
 		execute_builtin(args[0], args, shell);
+	}
 	else
 	{
 		char *command_path = find_command(args[0], shell);
@@ -35,13 +38,14 @@ void execute_command(char **args, shell_t *shell)
 				}
 			}
 			else /* parent process */
+			{
 				waitpid(child_pid, &status, 0);
+			}
 			free(command_path);
 		}
 		else
 		{/* Command not found */
 			char *error_message = str_concat(args[0], ": command not found\n");
-
 			print_error(error_message);
 			free(error_message);
 		}
@@ -55,36 +59,35 @@ void execute_command(char **args, shell_t *shell)
  */
 int is_builtin(const char *command)
 {
-	return (strcmp(command, "env") == 0 || strcmp(command, "exit") == 0);
+	return (strcmp(command, "env") == 0
+			|| strcmp(command, "exit") == 0
+			|| strcmp(command, "setenv") == 0
+			|| strcmp(command, "unsetenv") == 0);
 }
 
 /**
  * execute_builtin - Execute the given built-in command.
  * @command: The built-in command to execute.
  * @args: an array of commands and arguments
- * @shell: environment variable
+ * @shell: Pointer to the shell structure
  */
 void execute_builtin(const char *command, char **args, shell_t *shell)
 {
-	int status;
-
 	if (strcmp(command, "env") == 0)
 	{
-		env_builtin(shell);
+		builtin_env(shell);
 	}
 	else if (strcmp(command, "exit") == 0)
 	{
-		if (args[1] != NULL)
-		{
-			status = atoi(args[1]);
-			free_tokens(args);
-			exit(status);
-		}
-		else
-		{
-			free_tokens(args);
-			exit(0);
-		}
+		builtin_exit(args);
+	}
+	else if (strcmp(command, "setenv") == 0)
+	{
+		builtin_setenv(args);
+	}
+	else if (strcmp(command, "unsetenv") == 0)
+	{
+		builtin_unsetenv(args);
 	}
 }
 
@@ -92,17 +95,15 @@ void execute_builtin(const char *command, char **args, shell_t *shell)
  * find_command - Find the full path of the command using PATH resolution.
  * @command: The command to find.
  * Return: The full path of the command or NULL if not found.
- * @shell: environment variable
  */
 char *find_command(const char *command, shell_t *shell)
 {
 	char *path = getenv("PATH");
 	char *path_copy = strdup(path);
-	char *token = strtok(path_copy, ":");
-	char *full_path = NULL;
+	char *token = gj_strtoken(path_copy, ":");
 	(void)shell;
 
-	/*check if command is an absolute path first */
+	/*check if command is an absoluet path first */
 	if (command[0] == '/')
 	{
 		if (access(command, F_OK) == 0)
@@ -112,7 +113,7 @@ char *find_command(const char *command, shell_t *shell)
 
 	while (token != NULL)
 	{
-		full_path = str_concat(token, "/");
+		char *full_path = str_concat(token, "/");
 		full_path = str_concat(full_path, command);
 
 		if (access(full_path, F_OK) == 0)
@@ -121,10 +122,8 @@ char *find_command(const char *command, shell_t *shell)
 			return (full_path);
 		}
 		free(full_path);
-		full_path = NULL;
-		token = strtok(NULL, ":"); /* move to the next command */
+		token = gj_strtoken(NULL, ":"); /* move to the next command */
 	}
 	free(path_copy);
-
 	return (NULL);
 }

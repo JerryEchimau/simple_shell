@@ -1,5 +1,3 @@
-/* read_line.c */
-
 #include "shell.h"
 
 /**
@@ -17,7 +15,7 @@ char *read_line(void)
 
 	signal(SIGINT, SIG_DFL); /* reset signal handler */
 
-	return line;
+	return (line);
 }
 
 /**

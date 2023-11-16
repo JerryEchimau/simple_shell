@@ -1,5 +1,3 @@
-/* gj_readline.c */
-
 #include "shell.h"
 
 #define BUFFER_SIZE 1024
@@ -12,8 +10,8 @@
 char *_getline(void)
 {
 	static char buffer[BUFFER_SIZE];
-	static size_t buffer_index = 0;
-	static ssize_t read_chars = 0;
+	static size_t buffer_index;
+	static ssize_t read_chars;
 
 	char *line = NULL;
 	size_t line_index = 0;
@@ -62,7 +60,7 @@ ssize_t _read_chars(char *buffer, size_t size)
 		perror("read");
 	}
 
-	return read_chars;
+	return (read_chars);
 }
 
 /**
@@ -99,5 +97,5 @@ char *_append_to_line(char *line, size_t *index, char c)
 	new_line[*index + 1] = '\0';
 	(*index)++;
 
-	return new_line;
+	return (new_line);
 }

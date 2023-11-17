@@ -1,5 +1,3 @@
-/* shell.h */
-
 #ifndef SHELL_H
 #define SHELL_H
 
@@ -33,7 +31,12 @@ void builtin_env(shell_t *shell);
 void builtin_exit(char **args);
 void builtin_setenv(char **args);
 void builtin_unsetenv(char **args);
+
 void builtin_cd(char **args);
+char *get_new_dir(char **args);
+void handle_change_to_prev_dir(char *old_dir);
+void change_dir_and_update_env(char *new_dir, char *old_dir);
+
 
 /* function prototypes */
 void display_prompt(void);

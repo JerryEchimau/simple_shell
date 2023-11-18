@@ -28,7 +28,6 @@ int main(void)
 		if (line == NULL) /* EOF (Ctrl + D) */
 		{
 			free(line);
-			write(STDOUT_FILENO, "\n", 1);
 			break;
 		}
 

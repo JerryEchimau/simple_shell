@@ -16,7 +16,7 @@ char **parse_line(char *line)
 	size_t i = 0;
 
 	if (!tokens)
-		return (NULL);
+		return NULL;
 
 	token = gj_strtoken(line, " ");
 	while (token)
@@ -25,24 +25,27 @@ char **parse_line(char *line)
 		if (!tokens[i])
 		{
 			free_tokens(tokens);
-			return (NULL);
+			return NULL;
 		}
 		i++;
 
 		if (i > max_tokens)
 		{
+			char **temp;
+
 			max_tokens *= 2;
-			tokens = realloc(tokens, sizeof(char *) * (max_tokens + 1));
-			if (!tokens)
+			temp = realloc(tokens, sizeof(char *) * (max_tokens + 1));
+			if (!temp)
 			{
 				free_tokens(tokens);
-				return (NULL);
+				return NULL;
 			}
+			tokens = temp;
 		}
 		token = gj_strtoken(NULL, " ");
 	}
 	tokens[i] = NULL; /* null terminate */
-	return (tokens);
+	return tokens;
 }
 
 /**

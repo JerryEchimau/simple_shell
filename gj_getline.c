@@ -11,10 +11,9 @@
  */
 char *_getline(void)
 {
-	static char buffer[BUFFER_SIZE];
-	static size_t buffer_index = 0;
-	static ssize_t read_chars = 0;
-
+	char buffer[BUFFER_SIZE];
+	size_t buffer_index = 0;
+	ssize_t read_chars = 0;
 	char *line = NULL;
 	size_t line_index = 0;
 
@@ -26,8 +25,7 @@ char *_getline(void)
 			read_chars = _read_chars(buffer, BUFFER_SIZE);
 			if (read_chars <= 0)
 			{
-				free(line);
-				return (NULL);
+				return (line);  /* Changed from free(line); */
 			}
 		}
 
@@ -40,12 +38,6 @@ char *_getline(void)
 		line = _append_to_line(line, &line_index, buffer[buffer_index]);
 		buffer_index++;
 	}
-
-	while (line_index > 0 && (line[line_index - 1] == '\n' || line[line_index - 1] == '\r'))
-	{
-		line_index--;
-	}
-	line[line_index] = '\0';
 
 	return (line);
 }
@@ -68,7 +60,7 @@ ssize_t _read_chars(char *buffer, size_t size)
 		perror("read");
 	}
 
-	return read_chars;
+	return (read_chars);
 }
 
 /**
@@ -82,7 +74,6 @@ ssize_t _read_chars(char *buffer, size_t size)
 char *_append_to_line(char *line, size_t *index, char c)
 {
 	char *new_line;
-	size_t new_size;
 
 	if (*index == 0)
 	{
@@ -90,14 +81,12 @@ char *_append_to_line(char *line, size_t *index, char c)
 	}
 	else
 	{
-		new_size = *index + 2;
-		new_line = realloc(line, new_size);
+		new_line = realloc(line, *index + 2);
 	}
 
 	if (!new_line)
 	{
 		perror("malloc/realloc");
-		free(line);
 		exit(EXIT_FAILURE);
 	}
 
@@ -105,5 +94,5 @@ char *_append_to_line(char *line, size_t *index, char c)
 	new_line[*index + 1] = '\0';
 	(*index)++;
 
-	return new_line;
+	return (new_line);
 }

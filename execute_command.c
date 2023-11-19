@@ -89,39 +89,81 @@ void execute_builtin(const char *command, char **args, shell_t *shell)
 }
 
 /**
- * find_command - Find the full path of the command using PATH resolution.
- * @command: The command to find.
- * Return: The full path of the command or NULL if not found.
+ * find_command - Find the full path of a command in the PATH environment variable
+ * @command: The command to be found
+ * @shell: Pointer to the shell
+ *
+ * Return: The full path of the command if found, otherwise NULL
  */
 char *find_command(const char *command, shell_t *shell)
 {
 	char *path = getenv("PATH");
 	char *path_copy = strdup(path);
-	char *token = gj_strtoken(path_copy, ":");
+	char *token = strtok(path_copy, ":");
+	char *full_path = NULL;
+	char *command_path = NULL;
 	(void)shell;
 
-	/*check if command is an absolute path first */
+	if (!path_copy)
+	{
+		return (NULL);
+	}
+
 	if (command[0] == '/' || command[0] == '.')
 	{
 		if (access(command, F_OK) == 0)
-			return (strdup(command));
-		return (NULL);
+		{
+			command_path = strdup(command);
+		}
+		free(path_copy);
+		return (command_path);
 	}
 
 	while (token != NULL)
 	{
-		char *full_path = str_concat(token, "/");
-
-		full_path = str_concat(full_path, command);
-
-		if (access(full_path, F_OK) == 0)
+		full_path = find_full_path(token, command);
+		if (full_path != NULL)
 		{
+			command_path = strdup(full_path);
+			free(full_path);
 			free(path_copy);
-			return (full_path);
+			return command_path;
 		}
-		free(full_path);
-		token = gj_strtoken(NULL, ":"); /* move to the next command */
+		token = strtok(NULL, ":");
 	}
+
 	free(path_copy);
+	return (NULL);
+}
+
+/**
+ * find_full_path - Find the full path of a command in the given directory
+ * @dir: The directory to search for the command
+ * @command: The command to be found
+ *
+ * Return: The full path of the command if found, otherwise NULL
+ */
+char *find_full_path(const char *dir, const char *command)
+{
+	int size = snprintf(NULL, 0, "%s/%s", dir, command);
+	char *full_path = malloc(size + 1);
+
+	if (size < 0)
+	{
+		return (NULL);
+	}
+
+	if (!full_path)
+	{
+		return (NULL);
+	}
+
+	snprintf(full_path, size + 1, "%s/%s", dir, command);
+
+	if (access(full_path, F_OK) == 0)
+	{
+		return (full_path);
+	}
+	free(full_path);
 	return (NULL);
 }

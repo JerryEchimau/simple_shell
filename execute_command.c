@@ -100,8 +100,8 @@ char *find_command(const char *command, shell_t *shell)
 	char *token = gj_strtoken(path_copy, ":");
 	(void)shell;
 
-	/*check if command is an absoluet path first */
-	if (command[0] == '/')
+	/*check if command is an absolute path first */
+	if (command[0] == '/' || command[0] == '.')
 	{
 		if (access(command, F_OK) == 0)
 			return (strdup(command));

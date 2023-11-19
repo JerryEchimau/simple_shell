@@ -72,7 +72,6 @@ void change_dir_and_update_env(char *new_dir, char *old_dir)
 
 	setenv("PWD", new_pwd, 1);
 
-	free(old_dir);
 	free(new_pwd);
 }
 
@@ -99,5 +98,6 @@ void builtin_cd(char **args)
 		}
 
 		change_dir_and_update_env(new_dir, old_dir);
+		free(old_dir);
 	}
 }

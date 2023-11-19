@@ -41,6 +41,12 @@ char *_getline(void)
 		buffer_index++;
 	}
 
+	while (line_index > 0 && (line[line_index - 1] == '\n' || line[line_index - 1] == '\r'))
+	{
+		line_index--;
+	}
+	line[line_index] = '\0';
+
 	return (line);
 }
 

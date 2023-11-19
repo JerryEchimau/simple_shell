@@ -52,8 +52,9 @@ void execute_command(char **args, shell_t *shell);
 int is_builtin(const char *command);
 void execute_builtin(const char *command, char **args, shell_t *shell);
 char *find_command(const char *command, shell_t *shell);
+char *find_full_path(const char *dir, const char *command);
 
-void print_error(char *message);
+void print_error(const char *message);
 
 char *str_concat(const char *s1, const char *s2);
 char *gj_strtoken(char *string, const char *delim);

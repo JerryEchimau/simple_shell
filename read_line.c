@@ -17,7 +17,7 @@ char *read_line(void)
 
 	signal(SIGINT, SIG_DFL); /* reset signal handler */
 
-	return line;
+	return (line);
 }
 
 /**

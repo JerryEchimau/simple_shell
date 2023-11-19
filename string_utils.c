@@ -11,22 +11,17 @@
  */
 char *str_concat(const char *s1, const char *s2)
 {
-	char *result;
-	size_t len1, len2, i, j;
+	size_t len1 = strlen(s1);
+	size_t len2 = strlen(s2);
+	char *result = malloc(len1 + len2 + 1);
 
-	len1 = strlen(s1);
-	len2 = strlen(s2);
-	result = malloc(len1 + len2 + 1);
-
-	if (!result)
+	if (!result) {
 		return (NULL);
+	}
 
-	for (i = 0; i < len1; i++)
-		result[i] = s1[i];
-	for (j = 0; j < len2; j++)
-		result[i + j] = s2[j];
+	strcpy(result, s1);
+	strcat(result, s2);
 
-	result[i + j] = '\0';
 	return (result);
 }
 

@@ -27,12 +27,12 @@ int main(void)
 		line = read_line();
 		if (line == NULL) /* EOF (Ctrl + D) */
 		{
-			free(line);
+			/* free(line); */
 			break;
 		}
 
 		args = parse_line(line);
-		if (args[0] != NULL)
+		if (args && args[0])
 		{
 			execute_command(args, &shell);
 		}

@@ -23,12 +23,17 @@ void builtin_env(shell_t *shell)
 			perror("write");
 			return;
 		}
-		if (write(STDOUT_FILENO, "\n", 1) == -1)
+
+		if (shell->environ[i + 1] != NULL || isatty(STDOUT_FILENO))
 		{
-			perror("write");
+			if (write(STDOUT_FILENO, "\n", 1) == -1)
+			{
+				perror("write");
+			}
 		}
 	}
 }
+
 
 /**
  * builtin_exit - Execute the exit built-in command.

@@ -1,15 +1,25 @@
+/* error_handling.c */
+
 #include "shell.h"
 
 /**
  * print_error - Print error messages.
  * @message: The error message to print.
- *
- * Description: This function prints an error message to the standard error
- * output and frees dynamically allocated memory for the message.
  */
-void print_error(char *message)
+void print_error(const char *message)
 {
-	write(STDERR_FILENO, message, strlen(message));
+	size_t message_length = strlen(message);
+	char *error_message = malloc(message_length + 1);
 
-	free(message);
+	if (error_message == NULL)
+	{
+		perror("malloc");
+		return;
+	}
+
+	strncpy(error_message, message, message_length);
+	error_message[message_length] = '\0'; /* Ensure null-termination */
+	write(STDERR_FILENO, error_message, message_length);
+
+	free(error_message);
 }

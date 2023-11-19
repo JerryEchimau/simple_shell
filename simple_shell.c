@@ -13,12 +13,6 @@ int main(void)
 	char *line;
 	char **args;
 
-	if (putenv("TERM=xterm-256color") != 0)
-	{
-		perror("putenv");
-		return (EXIT_FAILURE);
-	}
-
 	shell.environ = environ;
 
 	while (1)

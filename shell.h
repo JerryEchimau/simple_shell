@@ -63,6 +63,12 @@ char *_getline(void);
 ssize_t _read_chars(char *buffer, size_t size);
 char *_append_to_line(char *line, size_t *len, char c);
 
+
+/* main function */
+int main(void);
+char **split_commands(char *line);
+void execute_commands(char **commands, shell_t *shell);
+
 /* external variables */
 extern char **environ;
 

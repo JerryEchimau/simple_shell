@@ -1,21 +1,20 @@
 /* execute_command.c */
 
 #include "shell.h"
-
+#define MAX_TOKENS 100
+#define MAX_COMMAND_LENGTH 100
 /**
  * execute_command - Execute the given command using execve.
  * @args: An array of command and arguments.
  * @shell: Pointer to the shell structure
  */
-void execute_command(char **args, shell_t *shell)
+int execute_command(char **args, shell_t *shell)
 {
 	pid_t child_pid;
 	int status;
 
-	if (is_builtin(args[0]))
-	{ /* Handle built-in commands */
+	if (is_builtin(args[0])) /* Handle built-in commands */
 		execute_builtin(args[0], args, shell);
-	}
 	else
 	{
 		char *command_path = find_command(args[0], shell);
@@ -27,7 +26,7 @@ void execute_command(char **args, shell_t *shell)
 			{
 				perror("fork");
 				free(command_path);
-				return;
+				return (-1);
 			}
 			if (child_pid == 0) /* success */
 			{
@@ -41,6 +40,8 @@ void execute_command(char **args, shell_t *shell)
 			else /* parent process */
 			{
 				waitpid(child_pid, &status, 0);
+				if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
+					return (1);
 			}
 			free(command_path);
 		}
@@ -52,6 +53,7 @@ void execute_command(char **args, shell_t *shell)
 			free(error_message);
 		}
 	}
+	return (0);
 }
 
 /**

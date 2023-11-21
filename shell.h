@@ -48,7 +48,7 @@ void setup_signal_handler(void);
 char **parse_line(char *line);
 void free_tokens(char **tokens);
 
-void execute_command(char **args, shell_t *shell);
+int execute_command(char **args, shell_t *shell);
 int is_builtin(const char *command);
 void execute_builtin(const char *command, char **args, shell_t *shell);
 char *find_command(const char *command, shell_t *shell);
@@ -63,11 +63,15 @@ char *_getline(void);
 ssize_t _read_chars(char *buffer, size_t size);
 char *_append_to_line(char *line, size_t *len, char c);
 
+void execute_logical_commands(char **logical_cmds, shell_t *shell);
+void execute_and_logical_command(char *logical_cmd, shell_t *shell, int *last_status);
+void execute_or_logical_command(char *logical_cmd, shell_t *shell, int *last_status);
+
 
 /* main function */
 int main(void);
-char **split_commands(char *line);
-void execute_commands(char **commands, shell_t *shell);
+char **split_commands(char *line, const char *delimiter);
+void execute_command_with_logical_operators(char *line, shell_t *shell);
 
 /* external variables */
 extern char **environ;

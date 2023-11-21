@@ -16,7 +16,7 @@ char **parse_line(char *line)
 	size_t i = 0;
 
 	if (!tokens)
-		return NULL;
+		return (NULL);
 
 	token = gj_strtoken(line, " ");
 	while (token)
@@ -25,7 +25,7 @@ char **parse_line(char *line)
 		if (!tokens[i])
 		{
 			free_tokens(tokens);
-			return NULL;
+			return (NULL);
 		}
 		i++;
 
@@ -38,14 +38,14 @@ char **parse_line(char *line)
 			if (!temp)
 			{
 				free_tokens(tokens);
-				return NULL;
+				return (NULL);
 			}
 			tokens = temp;
 		}
 		token = gj_strtoken(NULL, " ");
 	}
 	tokens[i] = NULL; /* null terminate */
-	return tokens;
+	return (tokens);
 }
 
 /**

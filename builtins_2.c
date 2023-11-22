@@ -106,10 +106,6 @@ void builtin_cd(char **args)
  * builtin_alias - Execute the alias built-in command.
  * @args: An array of commands and arguments
  */
-/**
- * builtin_alias - Execute the alias built-in command.
- * @args: An array of commands and arguments
- */
 void builtin_alias(char **args)
 {
 	static char *aliases[MAX_TOKENS] = {NULL};

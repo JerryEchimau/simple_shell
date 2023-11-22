@@ -39,8 +39,8 @@ int execute_command(char **args, shell_t *shell)
 			else /* parent process */
 			{
 				waitpid(child_pid, &status, 0);
-				if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
-					return (1);
+				if (WIFEXITED(status))
+					shell->last_exit_status = WEXITSTATUS(status);
 			}
 			free(command_path);
 		}
@@ -54,6 +54,7 @@ int execute_command(char **args, shell_t *shell)
 	}
 	return (0);
 }
+
 
 /**
  * is_builtin - Check if the given command is a built-in command.

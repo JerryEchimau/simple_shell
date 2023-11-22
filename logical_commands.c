@@ -26,7 +26,7 @@ void execute_logical_commands(char **logical_cmds, shell_t *shell)
 		} 
 		else 
 		{
-			args = parse_line(logical_cmds[j]);
+			args = parse_line(logical_cmds[j], shell);
 			if (args && args[0]) 
 			{
 				last_status = execute_command(args, shell);
@@ -49,7 +49,8 @@ void execute_and_logical_command(char *logical_cmd, shell_t *shell, int *last_st
 
 	while (split_and_cmds[k] != NULL) 
 	{
-		char **args = parse_line(split_and_cmds[k]);
+		char **args = parse_line(split_and_cmds[k], shell);
+
 		if (args && args[0]) 
 		{
 			*last_status = execute_command(args, shell);
@@ -78,7 +79,8 @@ void execute_or_logical_command(char *logical_cmd, shell_t *shell, int *last_sta
 
 	while (split_or_cmds[k] != NULL) 
 	{
-		char **args = parse_line(split_or_cmds[k]);
+		char **args = parse_line(split_or_cmds[k], shell);
+
 		if (args && args[0]) 
 		{
 			*last_status = execute_command(args, shell);

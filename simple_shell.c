@@ -1,32 +1,79 @@
+/* simple_shell.c */
+
 #include "shell.h"
 
 /**
  * main - entry point for the shell program
+ * @argc: argument count
+ * @argv: argument vector
  *
- * Return: 0 on success
+ * If a filename is provided as a command line argument, the shell reads commands
+ * from this file. Otherwise, it reads commands from stdin. The shell executes
+ * each command read from the file or stdin until EOF is reached.
+ *
+ * Return: 0 on success, 1 if a file was provided but could not be opened
  */
-int main(void)
+int main(int argc, char *argv[])
 {
 	shell_t shell;
 	char *line;
+	FILE *fp = stdin;
 
 	shell.environ = environ;
 
+	if (argc > 1)
+	{
+		fp = fopen(argv[1], "r");
+		if (!fp)
+		{
+			perror("fopen");
+			return (1);
+		}
+	}
+
 	while (1)
 	{
-		display_prompt();
-		line = read_line();
+		if (fp == stdin)
+			display_prompt();
+
+		if (fp == stdin)
+			line = read_line();
+		else
+			line = read_line_from_file(fp);
+
 		if (!line)
-		{
 			break;
-		}
 
 		execute_command_with_logical_operators(line, &shell);
-
 		free(line);
 	}
+
+	if (fp != stdin)
+		fclose(fp);
+
 	return (0);
 }
+
+/**
+ * read_line_from_file - Read a line of input from a file.
+ * @fp: file pointer
+ *
+ * Return: A pointer to the line read, or NULL on EOF or error.
+ */
+char *read_line_from_file(FILE *fp)
+{
+	char *line = NULL;
+	size_t len = 0;
+
+	if (getline(&line, &len, fp) == -1)
+	{
+		free(line);
+		return NULL;
+	}
+
+	return line;
+}
+
 
 /**
  * split_commands - Split the input line into separate commands based on the given delimiter.

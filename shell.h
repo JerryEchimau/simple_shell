@@ -80,7 +80,8 @@ void execute_or_logical_command(char *logical_cmd, shell_t *shell, int *last_sta
 
 
 /* main function */
-int main(void);
+int main(int argc, char *argv[]);
+char *read_line_from_file(FILE *fp);
 char **split_commands(char *line, const char *delimiter);
 void execute_command_with_logical_operators(char *line, shell_t *shell);
 

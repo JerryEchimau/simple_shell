@@ -101,3 +101,52 @@ void builtin_cd(char **args)
 		free(old_dir);
 	}
 }
+
+/**
+ * builtin_alias - Execute the alias built-in command.
+ * @args: An array of commands and arguments
+ */
+/**
+ * builtin_alias - Execute the alias built-in command.
+ * @args: An array of commands and arguments
+ */
+void builtin_alias(char **args)
+{
+	static char *aliases[MAX_TOKENS] = {NULL};
+	int i;
+
+	if (args[1] == NULL) /* No arguments, print all aliases */
+	{
+		for (i = 0; aliases[i] != NULL; i++)
+			printf("%s\n", aliases[i]);
+	}
+	else /* One or more arguments */
+	{
+		for (i = 1; args[i] != NULL; i++)
+		{
+			char *name = strtok(args[i], "=");
+			char *value = strtok(NULL, "");
+
+			if (value == NULL) /* Print specific alias */
+			{
+				int j;
+				for (j = 0; aliases[j] != NULL; j++)
+				{
+					if (strncmp(aliases[j], name, strlen(name)) == 0)
+						printf("%s\n", aliases[j]);
+				}
+			}
+			else /* Set new alias */
+			{
+				int j;
+				for (j = 0; aliases[j] != NULL; j++)
+				{
+					if (strncmp(aliases[j], name, strlen(name)) == 0)
+						break;
+				}
+				free(aliases[j]);
+				aliases[j] = strdup(args[i]);
+			}
+		}
+	}
+}

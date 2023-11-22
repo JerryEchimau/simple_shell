@@ -78,13 +78,16 @@ char **split_commands(char *line, const char *delimiter)
 void execute_command_with_logical_operators(char *line, shell_t *shell)
 {
 	char **split_cmds = split_commands(line, ";");
-
 	size_t i;
-	for (i = 0; split_cmds[i] != NULL; i++) {
+
+	for (i = 0; split_cmds[i] != NULL; i++)
+	{
 		char *logical_cmd = split_cmds[i];
 		char **logical_args = (char **) malloc(sizeof(char *));
+
 		logical_args[0] = logical_cmd;
 		logical_args[1] = NULL;
+
 		execute_logical_commands(logical_args, shell);
 		free(logical_args);
 	}

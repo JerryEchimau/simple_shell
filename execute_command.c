@@ -1,8 +1,7 @@
 /* execute_command.c */
 
 #include "shell.h"
-#define MAX_TOKENS 100
-#define MAX_COMMAND_LENGTH 100
+
 /**
  * execute_command - Execute the given command using execve.
  * @args: An array of command and arguments.
@@ -67,7 +66,8 @@ int is_builtin(const char *command)
 			|| strcmp(command, "exit") == 0
 			|| strcmp(command, "setenv") == 0
 			|| strcmp(command, "unsetenv") == 0
-			|| strcmp(command, "cd") == 0);
+			|| strcmp(command, "cd") == 0
+			|| strcmp(command, "alias") == 0);
 }
 
 /**
@@ -88,6 +88,8 @@ void execute_builtin(const char *command, char **args, shell_t *shell)
 		builtin_unsetenv(args);
 	else if (strcmp(command, "cd") == 0)
 		builtin_cd(args);
+	else if (strcmp(command, "alias") == 0)
+		builtin_alias(args);
 }
 
 /**

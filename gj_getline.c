@@ -2,8 +2,6 @@
 
 #include "shell.h"
 
-#define BUFFER_SIZE 1024
-
 /**
  * _getline - Read a line of input from the user.
  *

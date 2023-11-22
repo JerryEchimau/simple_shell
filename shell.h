@@ -1,6 +1,10 @@
 #ifndef SHELL_H
 #define SHELL_H
 
+/* Macros */
+#define MAX_TOKENS 100
+#define MAX_COMMAND_LENGTH 100
+#define BUFFER_SIZE 1024
 
 /* libraries */
 #include <stdio.h>
@@ -11,15 +15,15 @@
 #include <sys/wait.h>
 #include <signal.h>
 
+
+
 /* environment variables */
 
 /**
- * struct shell - Structure representing a shell environment
- * @environ: Array of strings containing the environment variables
- *
- * Description: This structure encapsulates the environment variables
- *              associated with a shell, providing a convenient way to
- *              manage and access the shell environment.
+ * struct shell - Structure to represent the shell environment
+ * @environ: The environment variables
+ * @aliases: The list of aliases
+ * Add other members as needed for your shell
  */
 typedef struct shell
 {
@@ -27,10 +31,14 @@ typedef struct shell
 } shell_t;
 
 /* builtins */
+
+
 void builtin_env(shell_t *shell);
 void builtin_exit(char **args);
 void builtin_setenv(char **args);
 void builtin_unsetenv(char **args);
+void builtin_alias(char **args);
+
 
 void builtin_cd(char **args);
 char *get_new_dir(char **args);

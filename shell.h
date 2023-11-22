@@ -28,6 +28,7 @@
 typedef struct shell
 {
 	char **environ;
+	int last_exit_status;
 } shell_t;
 
 /* builtins */
@@ -53,7 +54,8 @@ char *read_line(void);
 void handle_sigint(int signo);
 void setup_signal_handler(void);
 
-char **parse_line(char *line);
+char **parse_line(char *line, shell_t *shell);
+char *replace_variables(char *str, shell_t *shell);
 void free_tokens(char **tokens);
 
 int execute_command(char **args, shell_t *shell);
@@ -66,6 +68,7 @@ void print_error(const char *message);
 
 char *str_concat(const char *s1, const char *s2);
 char *gj_strtoken(char *string, const char *delim);
+char *str_replace(const char *str, const char *old, const char *new);
 
 char *_getline(void);
 ssize_t _read_chars(char *buffer, size_t size);

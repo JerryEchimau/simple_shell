@@ -15,9 +15,14 @@ char **parse_line(char *line, shell_t *shell)
 	char **tokens = malloc(sizeof(char *) * (max_tokens + 1));
 	char *token;
 	size_t i = 0;
+	char *comment_start = strchr(line, '#');
 
 	if (!tokens)
 		return (NULL);
+
+	/* Ignore everything after # */
+	if (comment_start)
+		*comment_start = '\0';
 
 	line = replace_variables(line, shell);
 

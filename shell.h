@@ -23,7 +23,6 @@
  * struct shell - Structure to represent the shell environment
  * @environ: The environment variables
  * @last_exit_status: exit status of previous call
- * Add other members as needed for your shell
  */
 typedef struct shell
 {
@@ -80,6 +79,13 @@ void execute_and_logical_command(char *logical_cmd, shell_t *shell,
 void execute_or_logical_command(char *logical_cmd, shell_t *shell,
 		int *last_status);
 
+/* helpers */
+void execute_builtin_command(char **args, shell_t *shell);
+void execute_external_command(char **args, shell_t *shell);
+void execute_child_process(char **args, shell_t *shell, char *command_path);
+void execute_child_command(char **args, shell_t *shell, char *command_path);
+void wait_for_child_process(pid_t child_pid, int *status, shell_t *shell);
+int handle_command_not_found(const char *command);
 
 /* main function */
 int main(int argc, char *argv[]);

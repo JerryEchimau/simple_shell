@@ -11,21 +11,17 @@
  */
 char **parse_line(char *line, shell_t *shell)
 {
-	size_t max_tokens = 10;
+	size_t max_tokens = 10, i = 0;
 	char **tokens = malloc(sizeof(char *) * (max_tokens + 1));
-	char *token;
-	size_t i = 0;
-	char *comment_start = strchr(line, '#');
+	char *token, *comment_start = strchr(line, '#');
 
 	if (!tokens)
 		return (NULL);
 
-	/* Ignore everything after # */
-	if (comment_start)
+	if (comment_start) /* Ignore everything after # */
 		*comment_start = '\0';
 
 	line = replace_variables(line, shell);
-
 	token = gj_strtoken(line, " ");
 	while (token)
 	{
@@ -36,7 +32,6 @@ char **parse_line(char *line, shell_t *shell)
 			return (NULL);
 		}
 		i++;
-
 		if (i > max_tokens)
 		{
 			char **temp;
@@ -66,12 +61,8 @@ char **parse_line(char *line, shell_t *shell)
  */
 char *replace_variables(char *str, shell_t *shell)
 {
-	char *result;
-	char *dollar_dollar;
-	char *dollar_question;
-	char *start;
-	char pid[10];
-	char exit_status[4];
+	char *result, *dollar_dollar, *dollar_question, *start;
+	char pid[10], exit_status[4];
 
 	sprintf(pid, "%d", getpid());
 	sprintf(exit_status, "%d", shell->last_exit_status);
@@ -79,13 +70,11 @@ char *replace_variables(char *str, shell_t *shell)
 	dollar_dollar = str_replace(str, "$$", pid);
 	dollar_question = str_replace(dollar_dollar, "$?", exit_status);
 
-	/* Replace environment variables */
-	start = dollar_question;
+	start = dollar_question; /* Replace environment variables */
 	while ((start = strchr(start, '$')) != NULL)
 	{
 		char *end = strpbrk(start + 1, " /\\.,;:\"'`~!@#$%^&*()-+=[]{}<>|?");
-		char *name;
-		char *value;
+		char *name, *value;
 
 		if (end == NULL)
 			name = strdup(start + 1);
@@ -109,7 +98,6 @@ char *replace_variables(char *str, shell_t *shell)
 
 	free(dollar_dollar);
 	free(dollar_question);
-
 	return (result);
 }
 

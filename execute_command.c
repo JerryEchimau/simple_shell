@@ -7,53 +7,19 @@
  * @args: An array of command and arguments.
  * @shell: Pointer to the shell structure
  *
- * Return: 0 on success and -1 on failure
+ * Return: 0 always
  */
 int execute_command(char **args, shell_t *shell)
 {
-	pid_t child_pid;
-	int status;
-
-	if (is_builtin(args[0])) /* Handle built-in commands */
-		execute_builtin(args[0], args, shell);
+	if (is_builtin(args[0]))
+	{
+		execute_builtin_command(args, shell);
+	}
 	else
 	{
-		char *command_path = find_command(args[0], shell);
-
-		if (command_path != NULL)
-		{
-			child_pid = fork();
-			if (child_pid == -1) /* child process fails */
-			{
-				perror("fork");
-				free(command_path);
-				return (-1);
-			}
-			if (child_pid == 0) /* success */
-			{
-				if (execve(command_path, args, shell->environ) == -1)
-				{
-					perror("execve");
-					free(command_path);
-					_exit(126);
-				}
-			}
-			else /* parent process */
-			{
-				waitpid(child_pid, &status, 0);
-				if (WIFEXITED(status))
-					shell->last_exit_status = WEXITSTATUS(status);
-			}
-			free(command_path);
-		}
-		else
-		{/* Command not found */
-			char *error_message = str_concat(args[0], ": command not found\n");
-
-			print_error(error_message);
-			free(error_message);
-		}
+		execute_external_command(args, shell);
 	}
+
 	return (0);
 }
 
@@ -96,7 +62,7 @@ void execute_builtin(const char *command, char **args, shell_t *shell)
 }
 
 /**
- * find_command - Find the full path of a command in the PATH environment variable
+ * find_command - Find the full path of a command in PATH env
  * @command: The command to be found
  * @shell: Pointer to the shell
  *

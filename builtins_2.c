@@ -126,6 +126,7 @@ void builtin_alias(char **args)
 			if (value == NULL) /* Print specific alias */
 			{
 				int j;
+
 				for (j = 0; aliases[j] != NULL; j++)
 				{
 					if (strncmp(aliases[j], name, strlen(name)) == 0)
@@ -135,6 +136,7 @@ void builtin_alias(char **args)
 			else /* Set new alias */
 			{
 				int j;
+
 				for (j = 0; aliases[j] != NULL; j++)
 				{
 					if (strncmp(aliases[j], name, strlen(name)) == 0)

@@ -6,6 +6,8 @@
  * execute_command - Execute the given command using execve.
  * @args: An array of command and arguments.
  * @shell: Pointer to the shell structure
+ *
+ * Return: 0 on success and -1 on failure
  */
 int execute_command(char **args, shell_t *shell)
 {
@@ -132,7 +134,7 @@ char *find_command(const char *command, shell_t *shell)
 			command_path = strdup(full_path);
 			free(full_path);
 			free(path_copy);
-			return command_path;
+			return (command_path);
 		}
 		token = strtok(NULL, ":");
 	}

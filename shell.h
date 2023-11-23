@@ -22,7 +22,7 @@
 /**
  * struct shell - Structure to represent the shell environment
  * @environ: The environment variables
- * @aliases: The list of aliases
+ * @last_exit_status: exit status of previous call
  * Add other members as needed for your shell
  */
 typedef struct shell
@@ -75,8 +75,10 @@ ssize_t _read_chars(char *buffer, size_t size);
 char *_append_to_line(char *line, size_t *len, char c);
 
 void execute_logical_commands(char **logical_cmds, shell_t *shell);
-void execute_and_logical_command(char *logical_cmd, shell_t *shell, int *last_status);
-void execute_or_logical_command(char *logical_cmd, shell_t *shell, int *last_status);
+void execute_and_logical_command(char *logical_cmd, shell_t *shell,
+		int *last_status);
+void execute_or_logical_command(char *logical_cmd, shell_t *shell,
+		int *last_status);
 
 
 /* main function */

@@ -58,7 +58,7 @@ char **parse_line(char *line, shell_t *shell)
 
 
 /**
- * replace_variables - Replace the $$, $? and environment variables in a string.
+ * replace_variables - Replace the $$, $? and environment variables.
  * @str: The string to replace variables in.
  * @shell: Pointer to the shell structure
  *
@@ -93,8 +93,10 @@ char *replace_variables(char *str, shell_t *shell)
 			name = strndup(start + 1, end - start - 1);
 
 		value = getenv(name);
-		if (value != NULL) {
+		if (value != NULL)
+		{
 			char *old = dollar_question;
+
 			dollar_question = str_replace(old, start, value);
 			free(old);
 		}

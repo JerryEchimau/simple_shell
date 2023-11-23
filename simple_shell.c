@@ -7,10 +7,6 @@
  * @argc: argument count
  * @argv: argument vector
  *
- * If a filename is provided as a command line argument, the shell reads commands
- * from this file. Otherwise, it reads commands from stdin. The shell executes
- * each command read from the file or stdin until EOF is reached.
- *
  * Return: 0 on success, 1 if a file was provided but could not be opened
  */
 int main(int argc, char *argv[])
@@ -68,15 +64,14 @@ char *read_line_from_file(FILE *fp)
 	if (getline(&line, &len, fp) == -1)
 	{
 		free(line);
-		return NULL;
+		return (NULL);
 	}
 
-	return line;
+	return (line);
 }
 
-
 /**
- * split_commands - Split the input line into separate commands based on the given delimiter.
+ * split_commands - Split the input into separate commands based on delimiter.
  * @line: The input line to split.
  * @delimiter: The delimiter to split the line.
  *
@@ -114,11 +109,11 @@ char **split_commands(char *line, const char *delimiter)
 	}
 	commands[command_count] = NULL;
 
-	return commands;
+	return (commands);
 }
 
 /**
- * execute_command_with_logical_operators - Execute commands with logical operators
+ * execute_command_with_logical_operators - Execute commands logical operators
  * @line: Entire command line
  * @shell: Pointer to the shell structure
  */

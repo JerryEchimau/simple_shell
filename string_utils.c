@@ -15,9 +15,8 @@ char *str_concat(const char *s1, const char *s2)
 	size_t len2 = strlen(s2);
 	char *result = malloc(len1 + len2 + 1);
 
-	if (!result) {
+	if (!result)
 		return (NULL);
-	}
 
 	strcpy(result, s1);
 	strcat(result, s2);
@@ -84,8 +83,10 @@ char *str_replace(const char *str, const char *old, const char *new)
 	int newlen = strlen(new);
 	int oldlen = strlen(old);
 
-	for (i = 0; str[i] != '\0'; i++)    {
-		if (strstr(&str[i], old) == &str[i]) {
+	for (i = 0; str[i] != '\0'; i++)
+	{
+		if (strstr(&str[i], old) == &str[i])
+		{
 			count++;
 			i += oldlen - 1;
 		}
@@ -93,15 +94,18 @@ char *str_replace(const char *str, const char *old, const char *new)
 
 	result = (char *)malloc(i + count * (newlen - oldlen) + 1);
 	i = 0;
-	while (*str) {
-		if (strstr(str, old) == str) {
+	while (*str)
+	{
+		if (strstr(str, old) == str)
+		{
 			strcpy(&result[i], new);
 			i += newlen;
 			str += oldlen;
-		} else
+		}
+		else
 			result[i++] = *str++;
 	}
 
 	result[i] = '\0';
-	return result;
+	return (result);
 }

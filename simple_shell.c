@@ -11,7 +11,7 @@
  */
 int main(int argc, char *argv[])
 {
-	shell_t shell;
+	shell_t shell = {0};
 	char *line;
 	FILE *fp = stdin;
 
@@ -82,35 +82,54 @@ char **split_commands(char *line, const char *delimiter)
 	char **commands = NULL;
 	char *token;
 	size_t command_count = 0;
+	size_t capacity = 10;
 
-	token = strtok(line, delimiter);
+	commands = malloc(capacity * sizeof(char *));
+	if (!commands)
+	{
+		perror("malloc failed");
+		return NULL;
+	}
+
+	token = gj_strtoken(line, delimiter);
 	while (token != NULL)
 	{
-		commands = realloc(commands, (command_count + 1) * sizeof(char *));
-		if (!commands)
+		if (command_count >= capacity)
 		{
-			perror("realloc failed");
-			exit(EXIT_FAILURE);
+			char **tmp = realloc(commands, capacity * sizeof(char *));
+
+			capacity *= 2;
+			if (!tmp)
+			{
+				size_t i;
+
+				perror("realloc failed");
+				for (i = 0; i < command_count; i++)
+					free(commands[i]);
+				free(commands);
+				return (NULL);
+			}
+			commands = tmp;
 		}
 		commands[command_count] = strdup(token);
 		if (!commands[command_count])
 		{
+			size_t i;
+
 			perror("strdup failed");
-			exit(EXIT_FAILURE);
+			for (i = 0; i < command_count; i++)
+				free(commands[i]);
+			free(commands);
+			return (NULL);
 		}
 		command_count++;
-		token = strtok(NULL, delimiter);
-	}
-	commands = realloc(commands, (command_count + 1) * sizeof(char *));
-	if (!commands)
-	{
-		perror("realloc failed");
-		exit(EXIT_FAILURE);
+		token = gj_strtoken(NULL, delimiter);
 	}
 	commands[command_count] = NULL;
 
 	return (commands);
 }
+
 
 /**
  * execute_command_with_logical_operators - Execute commands logical operators
@@ -125,7 +144,7 @@ void execute_command_with_logical_operators(char *line, shell_t *shell)
 	for (i = 0; split_cmds[i] != NULL; i++)
 	{
 		char *logical_cmd = split_cmds[i];
-		char **logical_args = (char **) malloc(sizeof(char *));
+		char **logical_args = (char **)malloc(2 * sizeof(char *));
 
 		logical_args[0] = logical_cmd;
 		logical_args[1] = NULL;

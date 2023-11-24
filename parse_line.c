@@ -48,6 +48,7 @@ char **parse_line(char *line, shell_t *shell)
 		token = gj_strtoken(NULL, " ");
 	}
 	tokens[i] = NULL; /* null terminate */
+	free(line);
 	return (tokens);
 }
 
@@ -64,8 +65,8 @@ char *replace_variables(char *str, shell_t *shell)
 	char *result, *dollar_dollar, *dollar_question, *start;
 	char pid[10], exit_status[4];
 
-	sprintf(pid, "%d", getpid());
-	sprintf(exit_status, "%d", shell->last_exit_status);
+	snprintf(pid, sizeof(pid), "%d", getpid());
+	snprintf(exit_status, sizeof(exit_status), "%d", shell->last_exit_status);
 
 	dollar_dollar = str_replace(str, "$$", pid);
 	dollar_question = str_replace(dollar_dollar, "$?", exit_status);
@@ -91,6 +92,7 @@ char *replace_variables(char *str, shell_t *shell)
 		}
 
 		free(name);
+
 		start++;
 	}
 
@@ -98,7 +100,7 @@ char *replace_variables(char *str, shell_t *shell)
 
 	free(dollar_dollar);
 	free(dollar_question);
-	return (result);
+	return result;
 }
 
 

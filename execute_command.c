@@ -72,7 +72,7 @@ char *find_command(const char *command, shell_t *shell)
 {
 	char *path = getenv("PATH");
 	char *path_copy = strdup(path);
-	char *token = strtok(path_copy, ":");
+	char *token = gj_strtoken(path_copy, ":");
 	char *full_path = NULL;
 	char *command_path = NULL;
 	(void)shell;
@@ -102,7 +102,7 @@ char *find_command(const char *command, shell_t *shell)
 			free(path_copy);
 			return (command_path);
 		}
-		token = strtok(NULL, ":");
+		token = gj_strtoken(NULL, ":");
 	}
 
 	free(path_copy);

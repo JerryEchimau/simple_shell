@@ -36,35 +36,37 @@ char *str_concat(const char *s1, const char *s2)
 char *gj_strtoken(char *string, const char *delim)
 {
 	static char *nxt_tkn;
-
 	char *new_tkn;
 
 	if (string != NULL)
-		nxt_tkn = string; /*Updates the next value of the string*/
+		nxt_tkn = string; /* Updates the next value of the string */
 
-	/*Check for the end of tokens in the string*/
+	/* Check for the end of tokens in the string */
 	if (nxt_tkn == NULL || *nxt_tkn == '\0')
-		return (NULL); /*End of the string null is returned*/
+		return (NULL); /* End of the string, NULL is returned */
 
+	/* Skip leading delimiters */
 	while (*nxt_tkn != '\0' && strchr(delim, *nxt_tkn) != NULL)
 		nxt_tkn++;
 
-	/*check for end of tokens*/
+	/* Check for end of tokens */
 	if (*nxt_tkn == '\0')
 		return (NULL);
 
 	new_tkn = nxt_tkn;
 
+	/* Find the end of the current token */
 	while (*nxt_tkn != '\0' && strchr(delim, *nxt_tkn) == NULL)
-		nxt_tkn += 1;
+		nxt_tkn++;
 
+	/* Null-terminate the current token */
 	if (*nxt_tkn != '\0')
 	{
 		*nxt_tkn = '\0';
-		nxt_tkn += 1;
+		nxt_tkn++;
 	}
 
-	/*All strings have been tokenized completely */
+	/* All strings have been tokenized completely */
 	return (new_tkn);
 }
 
@@ -93,6 +95,13 @@ char *str_replace(const char *str, const char *old, const char *new)
 	}
 
 	result = (char *)malloc(i + count * (newlen - oldlen) + 1);
+
+	if (!result)
+	{
+		perror("malloc failed");
+		exit(EXIT_FAILURE);
+	}
+
 	i = 0;
 	while (*str)
 	{
@@ -103,9 +112,12 @@ char *str_replace(const char *str, const char *old, const char *new)
 			str += oldlen;
 		}
 		else
+		{
 			result[i++] = *str++;
+		}
 	}
 
 	result[i] = '\0';
-	return (result);
+
+	return result;
 }

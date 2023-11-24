@@ -12,10 +12,8 @@ char *get_new_dir(char **args)
 {
 	if (args[1] == NULL || strcmp(args[1], "~") == 0)
 		return (getenv("HOME"));
-
 	else if (strcmp(args[1], "-") == 0)
 		return (NULL);
-
 	else
 		return (args[1]);
 }
@@ -82,21 +80,21 @@ void change_dir_and_update_env(char *new_dir, char *old_dir)
 void builtin_cd(char **args)
 {
 	char *new_dir = get_new_dir(args);
+	char *old_dir = getcwd(NULL, 0);
+
+	if (old_dir == NULL)
+	{
+		perror("getcwd");
+		return;
+	}
 
 	if (new_dir == NULL)
 	{
 		handle_change_to_prev_dir(getenv("OLDPWD"));
+		free(old_dir);
 	}
 	else
 	{
-		char *old_dir = getcwd(NULL, 0);
-
-		if (old_dir == NULL)
-		{
-			perror("getcwd");
-			return;
-		}
-
 		change_dir_and_update_env(new_dir, old_dir);
 		free(old_dir);
 	}
@@ -120,8 +118,8 @@ void builtin_alias(char **args)
 	{
 		for (i = 1; args[i] != NULL; i++)
 		{
-			char *name = strtok(args[i], "=");
-			char *value = strtok(NULL, "");
+			char *name = gj_strtoken(args[i], "=");
+			char *value = gj_strtoken(NULL, "");
 
 			if (value == NULL) /* Print specific alias */
 			{
@@ -142,7 +140,8 @@ void builtin_alias(char **args)
 					if (strncmp(aliases[j], name, strlen(name)) == 0)
 						break;
 				}
-				free(aliases[j]);
+				if (aliases[j] != NULL)
+					free(aliases[j]);
 				aliases[j] = strdup(args[i]);
 			}
 		}

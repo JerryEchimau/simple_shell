@@ -100,7 +100,7 @@ char *replace_variables(char *str, shell_t *shell)
 
 	free(dollar_dollar);
 	free(dollar_question);
-	return result;
+	return (result);
 }
 
 

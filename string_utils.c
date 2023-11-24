@@ -119,5 +119,5 @@ char *str_replace(const char *str, const char *old, const char *new)
 
 	result[i] = '\0';
 
-	return result;
+	return (result);
 }

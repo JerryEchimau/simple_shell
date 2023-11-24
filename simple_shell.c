@@ -79,30 +79,24 @@ char *read_line_from_file(FILE *fp)
  */
 char **split_commands(char *line, const char *delimiter)
 {
-	char **commands = NULL;
-	char *token;
-	size_t command_count = 0;
-	size_t capacity = 10;
+	char **commands = NULL, *token, **tmp;
+	size_t command_count = 0, capacity = 10, i, j;
 
 	commands = malloc(capacity * sizeof(char *));
 	if (!commands)
 	{
 		perror("malloc failed");
-		return NULL;
+		return (NULL);
 	}
-
 	token = gj_strtoken(line, delimiter);
 	while (token != NULL)
 	{
 		if (command_count >= capacity)
 		{
-			char **tmp = realloc(commands, capacity * sizeof(char *));
-
+			tmp = realloc(commands, capacity * sizeof(char *));
 			capacity *= 2;
 			if (!tmp)
 			{
-				size_t i;
-
 				perror("realloc failed");
 				for (i = 0; i < command_count; i++)
 					free(commands[i]);
@@ -114,11 +108,9 @@ char **split_commands(char *line, const char *delimiter)
 		commands[command_count] = strdup(token);
 		if (!commands[command_count])
 		{
-			size_t i;
-
 			perror("strdup failed");
-			for (i = 0; i < command_count; i++)
-				free(commands[i]);
+			for (j = 0; j < command_count; j++)
+				free(commands[j]);
 			free(commands);
 			return (NULL);
 		}
@@ -126,7 +118,6 @@ char **split_commands(char *line, const char *delimiter)
 		token = gj_strtoken(NULL, delimiter);
 	}
 	commands[command_count] = NULL;
-
 	return (commands);
 }
 

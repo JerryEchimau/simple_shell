@@ -31,7 +31,7 @@ int main(void)
 		else if (chars_read == 0) /* EOF reached or Ctrl+D pressed */
 		{
 			/* write(STDOUT_FILENO, "\n", 1); */
-			break; /* exit the shell loop */
+			exit(2); /* exit the shell loop */
 		}
 
 		args = parse_input(line); /* tokenize input */

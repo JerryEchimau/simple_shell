@@ -37,14 +37,9 @@ int main(void)
 
 		/* check command execution status */
 		if (status == 1)
-		{
-			printf("command failed shell exited\n");
 			break;
-		}
 		else if (status == 0)
-		{
 			continue;
-		}
 
 		/* free memory after command execution */
 		line = NULL; /* reset line to NULL */

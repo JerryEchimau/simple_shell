@@ -12,6 +12,7 @@ int main(void)
 	ssize_t chars_read; /* to store getline's return value */
 	char **args; /* tokenized array of strings */
 	int status; /* return value of external commands */
+	int shell_loop_status = 0; /* status to be returned by the shell */
 
 	while (1)
 	{
@@ -24,29 +25,28 @@ int main(void)
 		{
 			/* error occured during reading */
 			perror("my_getline error");
-			exit(EXIT_FAILURE);
+			shell_loop_status = 1; /* indicate error */
+			break;
 		}
 		else if (chars_read == 0) /* EOF reached or Ctrl+D pressed */
 		{
-			write(STDOUT_FILENO, "\n", 1);
+			/* write(STDOUT_FILENO, "\n", 1); */
 			break; /* exit the shell loop */
 		}
 
 		args = parse_input(line); /* tokenize input */
 		status = execute_command(args, line); /* exexcute the command */
 
-		/* check command execution status */
-		if (status == 1)
-			break;
-		else if (status == 0)
-			continue;
+		/* Update shell loop status */
+		if (status != 0)
+			shell_loop_status = status;
 
 		/* free memory after command execution */
 		line = NULL; /* reset line to NULL */
 		len = 0; /* reset len to 0 */
 	}
 
-	return (0);
+	return (shell_loop_status);
 }
 
 /**

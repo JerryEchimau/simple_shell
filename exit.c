@@ -9,7 +9,7 @@
  */
 int builtin_exit(char **args, char *line)
 {
-	int exit_status = 0; /* Default exit status */
+	int exit_status = 0 ; /* Default exit status */
 
 	if (args[1] != NULL) /* Check if an exit status is provided */
 	{

@@ -74,6 +74,6 @@ int execute_command(char **args, char *line)
         }
 	else
 	{
-                return (1); /* Command failed (non-zero exit or signal) */
+                return (2); /* Command failed (non-zero exit or signal) */
         }
 }

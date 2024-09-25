@@ -10,13 +10,13 @@
 int handle_builtin(char **args)
 {
 	if (strcmp(args[0], "exit") == 0)
-	{
 		return (builtin_exit(args));
-	}
 	else if (strcmp(args[0], "env") == 0)
-	{
 		return (builtin_env(args));
-	}
+	else if (strcmp(args[0], "setenv") == 0)
+		return (builtin_setenv(args));
+	else if (strcmp(args[0], "unsetenv") == 0)
+		return (builtin_unsetenv(args));
 
 	/* Add more built-in commands here as you implement them */
 

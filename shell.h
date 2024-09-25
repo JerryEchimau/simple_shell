@@ -39,5 +39,7 @@ char *find_path(char *command);
 int handle_builtin(char **args, char *line);
 int builtin_exit(char **args, char *line);
 int builtin_env(char **args);
+int builtin_setenv(char **args);
+int builtin_unsetenv(char **args);
 
 #endif /* SHELL_H */

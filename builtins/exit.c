@@ -7,7 +7,7 @@
  *
  * Return: 0 to exit the shell, 1 to continue.
  */
-int builtin_exit(char **args)
+int builtin_exit(char **args, char *line)
 {
 	int exit_status = 0; /* Default exit status */
 
@@ -16,5 +16,7 @@ int builtin_exit(char **args)
 		exit_status = atoi(args[1]); /* Convert argument to integer */
 	}
 
+	free(line);
+	free(args);
 	exit(exit_status); /* Exit the shell with the given status */
 }

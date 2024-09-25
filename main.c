@@ -18,29 +18,36 @@ int main(void)
 		print_prompt();
 		chars_read = my_getline(&line, &len, stdin);
 
-		/* my_getline return values */
+		/* Handle my_getline return values */
 		if (chars_read == -1) /* error */
 		{
+			/* error occured during reading */
 			perror("my_getline error");
 			exit(EXIT_FAILURE);
 		}
 		else if (chars_read == 0) /* EOF reached or Ctrl+D pressed */
 		{
 			write(STDOUT_FILENO, "\n", 1);
-			break;
+			break; /* exit the shell loop */
 		}
 
-		args = parse_input(line);
-		status = execute_command(args, line); /* exexcute all commands */
+		args = parse_input(line); /* tokenize input */
+		status = execute_command(args, line); /* exexcute the command */
 
-		if (WIFEXITED(status))
-			printf("Command exited with status: %d\n", WEXITSTATUS(status));
-		if (WIFSIGNALED(status))
-			printf("Command terminated by signal: %d\n", WTERMSIG(status));
+		/* check command execution status */
+		if (status == 1)
+		{
+			printf("command failed shell exited\n");
+			break;
+		}
+		else if (status == 0)
+		{
+			continue;
+		}
 
 		/* free memory after command execution */
-		line = NULL;
-		len = 0;
+		line = NULL; /* reset line to NULL */
+		len = 0; /* reset len to 0 */
 	}
 
 	return (0);

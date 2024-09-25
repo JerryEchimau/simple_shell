@@ -4,7 +4,7 @@
  * builtin_env - Prints the current environment.
  * @args: An array of strings (unused).
  *
- * Return: Always returns 1 to continue the shell loop.
+ * Return: Always returns 0 to continue the shell loop.
  */
 int builtin_env(char **args __attribute__((unused)))
 {
@@ -17,5 +17,5 @@ int builtin_env(char **args __attribute__((unused)))
 		i++;
 	}
 
-	return (1);
+	return (0);
 }

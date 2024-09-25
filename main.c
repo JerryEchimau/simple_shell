@@ -15,7 +15,8 @@ int main(void)
 
 	while (1)
 	{
-		print_prompt();
+		if (isatty(STDIN_FILENO))
+			print_prompt();
 		chars_read = my_getline(&line, &len, stdin);
 
 		/* Handle my_getline return values */

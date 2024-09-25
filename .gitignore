@@ -1,1 +1,7 @@
+builtins/
+external/
+parsing/
 shell
+utils/
+combined_c_files.txt
+allfiles

@@ -29,15 +29,15 @@ char *my_strtok(char *str, const char *delim);
 
 /* Executing commands */
 /* external commands */
-int execute_command(char **args);
+int execute_command(char **args, char *line);
 char *construct_path(const char *directory, const char *command);
 int is_executable(const char *file_path);
  char *search_path(char *command);
 char *find_path(char *command);
 
 /* builtins */
-int handle_builtin(char **args);
-int builtin_exit(char **args);
+int handle_builtin(char **args, char *line);
+int builtin_exit(char **args, char *line);
 int builtin_env(char **args);
 
 #endif /* SHELL_H */

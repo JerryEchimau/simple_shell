@@ -7,11 +7,11 @@
  *
  * Return: 1 if the command is a built-in, 0 otherwise.
  */
-int handle_builtin(char **args)
+int handle_builtin(char **args, char *line)
 {
 	if (strcmp(args[0], "exit") == 0)
 	{
-		return (builtin_exit(args));
+		return (builtin_exit(args, line));
 	}
 	else if (strcmp(args[0], "env") == 0)
 	{

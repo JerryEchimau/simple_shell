@@ -31,7 +31,7 @@ int main(void)
 		}
 
 		args = parse_input(line);
-		status = execute_command(args); /* exexcute all commands */
+		status = execute_command(args, line); /* exexcute all commands */
 
 		if (WIFEXITED(status))
 			printf("Command exited with status: %d\n", WEXITSTATUS(status));
@@ -39,11 +39,8 @@ int main(void)
 			printf("Command terminated by signal: %d\n", WTERMSIG(status));
 
 		/* free memory after command execution */
-		free(line);
 		line = NULL;
 		len = 0;
-
-		free(args);
 	}
 
 	return (0);

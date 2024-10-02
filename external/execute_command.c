@@ -68,12 +68,12 @@ int execute_command(char **args, char *line)
         free(args);
 
         /* Interpret the status and return 0 for success, 1 for error */
-        if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
+        if (WIFEXITED(status))
 	{
-                return (0); /* Command executed successfully */
+                return (WEXITSTATUS(status)); /* return the child's exit status */
         }
 	else
 	{
-                return (1); /* Command failed (non-zero exit or signal) */
+                return (1); /* Error: terminated by signal or execve failed */
         }
 }
